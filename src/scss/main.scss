@@ -1,0 +1,14 @@
+// Vendors
+@use './vendor/reset';
+
+// Components
+@use './components/nereels-list';
+@use './components/nereels-item';
+
+body, html, #app {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  touch-action: manipulation;
+}

@@ -1,0 +1,161 @@
+// Mixins
+@use '../mixins/media-queries';
+
+.nereels-item {
+  display: flex;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background-color: var(--primary-dark);
+
+  $isPaused: & + '--paused';
+  $isMuted: & + '--muted';
+  $isInteracted: & + '--interacted';
+  $isReady: & + '--ready';
+  $isLiked: & + '--liked';
+
+  &__content {
+    position: relative;
+    width: var(--content-width);
+    height: var(--content-height);
+  }
+
+  &__controls, &__video, &__preview {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+  }
+
+  &__play-button {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    cursor: pointer;
+    background: none;
+    border: none;
+  }
+
+  &__play-button-icon {
+    display: flex;
+    position: absolute;
+    width: 80px;
+    height: 80px;
+    top: 50%;
+    left: 50%;
+    margin: -40px 0 0 -40px;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    border-radius: 40px;
+    background-color: var(--primary-dark-transparent);
+    transform: scale(4);
+    transition: opacity 250ms ease-in-out, transform 250ms ease-in-out;
+
+    &:after {
+      display: inline-block;
+      content: '▶';
+      margin-left: 6px;
+      font-size: 34px;
+      color: var(--primary-light);
+    }
+
+    #{$isPaused}#{$isInteracted} & {
+      opacity: 1;
+      transform: scale(1);
+      transition-duration: 400ms;
+    }
+
+  }
+
+  &__mute-button {
+    display: flex;
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    top: 16px;
+    right: 16px;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    background-color: var(--primary-dark-transparent);
+    border: none;
+    border-radius: 20px;
+
+    &:after {
+      display: inline-block;
+      content: '🔊';
+      margin-left: 3px;
+      font-size: 18px;
+      color: var(--primary-light);
+    }
+
+    #{$isMuted} &:after {
+      content: '🔇';
+    }
+
+  }
+
+  &__video, &__preview {
+    object-fit: cover;
+  }
+
+  &__preview {
+
+    #{$isReady} & {
+      display: none;
+    }
+
+  }
+
+  &__menu {
+    display: flex;
+    position: absolute;
+    bottom: 16px;
+    right: 16px;
+    flex-direction: column;
+    gap: 8px;
+
+    @include media-queries.desktop {
+      right: auto;
+      left: 50%;
+      margin-left: calc(var(--content-width) / 2 + 16px);
+    }
+
+  }
+
+  &__menu-button {
+    display: flex;
+    width: 32px;
+    height: 32px;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border: none;
+    background: none;
+
+    &:after {
+      font-size: 16px;
+      color: var(--primary-light);
+    }
+
+    &--like:after {
+      content: '🤍';
+
+      #{$isLiked} & {
+        content: '❤️';
+      }
+
+    }
+
+    &--comment:after {
+      content: '💬';
+    }
+
+  }
+
+}

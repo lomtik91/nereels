@@ -1,0 +1,9 @@
+$primary-dark: #0C1014;
+$primary-light: #FFF;
+$primary-dark-transparent: rgba(#0C1014, 0.75);
+
+:root {
+  --primary-dark: #{$primary-dark};
+  --primary-light: #{$primary-light};
+  --primary-dark-transparent: #{$primary-dark-transparent};
+}

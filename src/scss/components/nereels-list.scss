@@ -1,0 +1,17 @@
+.nereels-list {
+  position: relative;
+  width: 100%;
+  height: var(--page-height);
+  overflow: auto;
+  scroll-snap-type: y mandatory;
+  background-color: var(--primary-dark);
+
+  &__item {
+    position: relative;
+    width: 100%;
+    height: var(--page-height);
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+  }
+
+}
