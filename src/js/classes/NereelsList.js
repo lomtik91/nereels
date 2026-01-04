@@ -9,9 +9,9 @@ class NereelsList {
      *
      * @param {HTMLElement} parentElement - The parent DOM element where the component will be rendered.
      * @param {NereelsVideo[]} videos - Array of videos to be used in the list.
-     * @param {number} itemsToRenderCount - Number of videos to render in the list at one time
-     * (reduce for better performance). Minimal value is 3.
-     * @param {number} aspectRatio - The aspect ratio of the list content.
+     * @param {number} itemsToRenderCount - Number of videos to render in the list for the first time
+     * and will be added while scrolling (reduce for better performance). Minimal value is 3.
+     * @param {number} aspectRatio - The aspect ratio of the video frame.
      */
     constructor({
         parentElement,
@@ -29,6 +29,7 @@ class NereelsList {
     }
 
     static CLASS_NAME = 'nereels-list';
+    // Items count left before the list end to render more items while scrolling
     static ITEMS_RENDER_GAP = 2;
     static ITEMS_TO_RENDER_COUNT_MIN = 3;
 
@@ -87,8 +88,16 @@ class NereelsList {
         const pageWidth = document.documentElement.clientWidth;
         const pageHeight = document.documentElement.clientHeight;
 
-        let contentHeight = pageHeight;
-        let contentWidth = Math.min(pageHeight * this.aspectRatio, pageWidth);
+
+
+        const contentHeight = pageHeight;
+        let contentWidth = pageWidth;
+
+        // If it's horizontal screen - video is full height and width is adjusted to aspect ratio
+        // otherwise - video is fullscreen
+        if (pageWidth > pageHeight) {
+            contentWidth = Math.min(pageHeight * this.aspectRatio, pageWidth);
+        }
 
         this.element.style.setProperty('--page-height', `${pageHeight}px`);
         this.element.style.setProperty('--content-width', `${contentWidth}px`);
@@ -101,9 +110,20 @@ class NereelsList {
         });
     }
 
+    _generateItemId() {
+        if (
+            typeof crypto !== 'undefined'
+            && typeof crypto.randomUUID === 'function'
+        ) {
+            return crypto.randomUUID();
+        }
+
+        return Math.random().toString(36).substring(2, 11);
+    }
+
     _renderItem(video) {
         const item = new NereelsItem({
-            id: crypto.randomUUID(),
+            id: this._generateItemId(),
             src: video.src,
             previewSrc: video.previewSrc,
             muted: this.isMuted,
@@ -142,8 +162,6 @@ class NereelsList {
         itemsToRender.forEach((video) => {
             this._renderItem(video);
         });
-
-        console.log(this.videos, this.renderedItems);
     }
 
     _onItemMuteToggle(isMuted) {

@@ -1,4 +1,12 @@
 class NereelsItem {
+    /**
+     *
+     * @param {string} id - Item ID
+     * @param {string} src - Video source URL.
+     * @param {string} previewSrc - Preview video image source URL.
+     * @param {boolean} muted - Is video muted after render.
+     * @param {function} onMuteToggle - Callback function for mute toggle event.
+     */
     constructor({
         id,
         src,
